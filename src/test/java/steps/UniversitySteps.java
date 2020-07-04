@@ -26,12 +26,6 @@ public class UniversitySteps {
 //        this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
     }
 
-    @After()
-    public void tearDown() {
-        driver.manage().deleteAllCookies();
-        driver.close();
-        driver.quit();
-    }
 
     @Given("^I access webdriveruniversity$")
     public void i_access_webdriveruniversity() throws Throwable {
@@ -82,7 +76,7 @@ public class UniversitySteps {
     public void iEnterAUsernameFromData(DataTable arg1) {
         List<List<String>> data = arg1.raw();
         //switch to new window in tab
-        @SuppressWarnings("unused")
+        @SuppressWarnings(value = "unused")
         String winHandleBefore = driver.getWindowHandle();
         for (String winHandle : driver.getWindowHandles()) {
             driver.switchTo().window(winHandle);
@@ -131,10 +125,16 @@ public class UniversitySteps {
     @Then("^the user should be presented with the following prompt alert \"([^\"]*)\"$")
     public void the_user_should_be_presented_with_the_following_prompt_alert(String message) throws Throwable {
         Alert alert = driver.switchTo().alert();
-        System.out.println("Text: "+alert.getText());
-        Assert.assertEquals(message.toLowerCase().replaceAll("\\s",""),
-                alert.getText().toString().toLowerCase().replaceAll("\\s",""));
+        System.out.println("Text: " + alert.getText());
+        Assert.assertEquals(message.toLowerCase().replaceAll("\\s", ""),
+                alert.getText().toString().toLowerCase().replaceAll("\\s", ""));
         Thread.sleep(2000);
         alert.accept();
+    }
+
+    @After()
+    public void tearDown() {
+        driver.quit();
+        driver = null;
     }
 }
